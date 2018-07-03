@@ -18,12 +18,12 @@ import javax.servlet.http.HttpServletResponse;
  * @author tam
  */
 public class Signin extends HttpServlet {
-    
+
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
-        
+
         try {
             response.getWriter().println("<h1 style=\"text-align:center;\">Sign in</h1>\n"
                     + "<form style=\"text-align:center; \" method=\"post\"> \n"
@@ -39,54 +39,68 @@ public class Signin extends HttpServlet {
         } catch (IOException ex) {
             Logger.getLogger(Signin.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
-        
+
         String iD = request.getParameter("iD");// name in http
         String pW = request.getParameter("password");
         String cpW = request.getParameter("cPassword");
-        
+
         UserRepo repo = new UserRepo();
         if (repo.checkID(iD)) {
             try {
                 response.getWriter().println("ID is already taken");
                 this.doGet(request, response);
+                return;
             } catch (IOException ex) {
                 Logger.getLogger(Signin.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
+        if (pW.isEmpty()) {
+            try {
+                response.getWriter().println("Password is not empty");
+                this.doGet(request, response);
+                return;
+            } catch (IOException ex) {
+                Logger.getLogger(Signin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
         if (!pW.equals(cpW)) {
             try {
                 response.getWriter().println("Confirm password is not correct");
                 this.doGet(request, response);
+                return;
             } catch (IOException ex) {
                 Logger.getLogger(Signin.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        
+
         if (repo.createUser(iD, pW)) {
             try {
                 response.getWriter().println("Sign in success");
                 response.sendRedirect("/login");
             } catch (IOException ex) {
                 Logger.getLogger(Signin.class.getName()).log(Level.SEVERE, null, ex);
-            }            
+            }
         } else {
             try {
                 response.getWriter().println("Error");
                 this.doGet(request, response);
+                return;
             } catch (IOException ex) {
                 Logger.getLogger(Signin.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
     }
-    
+
 }
