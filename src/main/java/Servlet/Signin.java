@@ -62,9 +62,9 @@ public class Signin extends HttpServlet {
             }
         }
 
-        if (pW.isEmpty()) {
+        if (pW.isEmpty()||iD.isEmpty()) {
             try {
-                response.getWriter().println("Password is not empty");
+                response.getWriter().println("ID or Password is not empty");
                 this.doGet(request, response);
                 return;
             } catch (IOException ex) {
