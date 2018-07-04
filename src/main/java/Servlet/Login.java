@@ -27,17 +27,20 @@ public class Login extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
         User user = CheckCookie.checkUserInCookie(request);
         if (user == null) {
-            response.getWriter().println("<h1 style=\"text-align:center;\">Login</h1>\n"
-                    + "<form style=\"text-align:center; \" method=\"post\"> \n"
-                    + "<input type=\"text\" name=\"iD\" placeholder=\"ID\"> \n"
-                    + "<br> \n"
-                    + "<input type=\"password\" name=\"password\" placeholder=\"Password\"> \n"
-                    + "<br>\n"
-                    + "<br>\n"
-                    + "<input type=\"submit\" value=\"Login\"> \n"
-                    + "<br>\n"
-                    + "<a href=\"/signin\">Create new account ?</a>\n"
-                    + "</form>");
+            while (true) {
+                response.getWriter().println("<h1 style=\"text-align:center;\">Login</h1>\n"
+                        + "<form style=\"text-align:center; \" method=\"post\"> \n"
+                        + "<input type=\"text\" name=\"iD\" placeholder=\"ID\"> \n"
+                        + "<br> \n"
+                        + "<input type=\"password\" name=\"password\" placeholder=\"Password\"> \n"
+                        + "<br>\n"
+                        + "<br>\n"
+                        + "<input type=\"submit\" value=\"Login\"> \n"
+                        + "<br>\n"
+                        + "<a href=\"/signin\">Create new account ?</a>\n"
+                        + "</form>");
+            }
+
         } else {
             HttpSession session = request.getSession();
             session.setAttribute("userInfo", user);
